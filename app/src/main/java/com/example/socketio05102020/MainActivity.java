@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +35,18 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Object object = args[0];
                     JSONObject jsonObject = new JSONObject(object.toString());
-                    String message = jsonObject.getString("message");
-                    Log.d("BBB",message);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
